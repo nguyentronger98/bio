@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bio - Nguyễn Văn A</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', 'Fira Code', monospace;
+            background: #0a0a0a;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .code-line {
+            position: absolute;
+            font-size: 12px;
+            color: #00b4ff;
+            white-space: nowrap;
+            animation: scrollCode 20s linear infinite;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        @keyframes scrollCode {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Circuit pattern */
+        .circuit-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 25% 25%, #1a1a2e 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, #16213e 0%, transparent 50%),
+                linear-gradient(45deg, transparent 30%, rgba(0, 180, 255, 0.03) 50%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 180, 255, 0.2);
+            box-shadow: 
+                0 0 50px rgba(0, 180, 255, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+            animation: containerGlow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes containerGlow {
+            from { box-shadow: 0 0 50px rgba(0, 180, 255, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+            to { box-shadow: 0 0 80px rgba(0, 180, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+        }
+
+        /* Terminal header */
+        .terminal-header {
+            background: linear-gradient(90deg, #1a1a1a, #2d2d2d);
+            padding: 12px 20px;
+            border-bottom: 1px solid rgba(0, 180, 255, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ff5f57;
+        }
+        .terminal-dot:nth-child(2) { background: #ffbd2e; }
+        .terminal-dot:nth-child(3) { background: #28ca42; }
+
+        .terminal-title {
+            margin-left: 15px;
+            color: #00b4ff;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .header {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, rgba(0, 180, 255, 0.05), rgba(0, 120, 200, 0.05));
+            position: relative;
+        }
+
+        .profile-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 3px solid rgba(0, 180, 255, 0.6);
+            margin: 0 auto 25px;
+            background: linear-gradient(45deg, #0a0a0a, #1a1a1a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4.5rem;
+            color: #00b4ff;
+            font-weight: bold;
+            text-shadow: 0 0 20px rgba(0, 180, 255, 0.8);
+            position: relative;
+            overflow: hidden;
+            animation: profilePulse 3s ease-in-out infinite;
+            box-shadow: 
+                0 0 30px rgba(0, 180, 255, 0.3),
+                inset 0 0 30px rgba(0, 180, 255, 0.1);
+        }
+
+        .profile-img::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(transparent, rgba(0, 180, 255, 0.3), transparent);
+            animation: rotate 4s linear infinite;
+        }
+
+        .profile-img::after {
+            content: '';
+            position: absolute;
+            inset: 3px;
+            background: #0a0a0a;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes profilePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .name {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(0, 180, 255, 0.5);
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes textGlow {
+            from { text-shadow: 0 0 20px rgba(0, 180, 255, 0.5); }
+            to { text-shadow: 0 0 30px rgba(0, 180, 255, 0.8); }
+        }
+
+        .title {
+            font-size: 1.4rem;
+            color: #00b4ff;
+            margin-bottom: 20px;
+            font-weight: 400;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .typing-effect::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .social-link {
+            width: 55px;
+            height: 55px;
+            background: rgba(0, 180, 255, 0.1);
+            border: 1px solid rgba(0, 180, 255, 0.3);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00b4ff;
+            text-decoration: none;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 180, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .social-link:hover::before {
+            left: 100%;
+        }
+
+        .social-link:hover {
+            background: rgba(0, 180, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 180, 255, 0.3);
+            border-color: rgba(0, 180, 255, 0.6);
+        }
+
+        .content {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .section {
+            background: rgba(10, 10, 10, 0.8);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 180, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00b4ff, transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .section:hover::before {
+            opacity: 1;
+        }
+
+        .section:hover {
+            background: rgba(15, 15, 15, 0.9);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 180, 255, 0.2);
+            border-color: rgba(0, 180, 255, 0.4);
+        }
+
+        .section h3 {
+            color: #ffffff;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-icon {
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(45deg, #00b4ff, #0078d4);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            box-shadow: 0 0 15px rgba(0, 180, 255, 0.4);
+        }
+
+        .section p {
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.7;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .skill-tag {
+            background: linear-gradient(45deg, rgba(0, 180, 255, 0.1), rgba(0, 120, 200, 0.1));
+            color: #00b4ff;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid rgba(0, 180, 255, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 180, 255, 0.2), transparent);
+            transition: left 0.4s;
+        }
+
+        .skill-tag:hover::before {
+            left: 100%;
+        }
+
+        .skill-tag:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0, 180, 255, 0.3);
+            background: rgba(0, 180, 255, 0.2);
+        }
+
+        .contact-info {
+            grid-column: 1 / -1;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(0, 180, 255, 0.05), rgba(0, 120, 200, 0.05));
+        }
+
+        .contact-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin: 15px 25px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            color: #00b4ff;
+            transform: scale(1.05);
+        }
+
+        /* Code animation elements */
+        .floating-code {
+            position: absolute;
+            color: rgba(0, 180, 255, 0.3);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            pointer-events: none;
+            animation: floatCode 8s ease-in-out infinite;
+        }
+
+        .floating-code:nth-child(1) {
+            top: 15%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .floating-code:nth-child(2) {
+            top: 25%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-code:nth-child(3) {
+            bottom: 20%;
+            left: 15%;
+            animation-delay: 4s;
+        }
+
+        @keyframes floatCode {
+            0%, 100% { 
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.3;
+            }
+            50% { 
+                transform: translateY(-30px) rotate(5deg);
+                opacity: 0.6;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+                gap: 25px;
+                padding: 30px 20px;
+            }
+            
+            .name {
+                font-size: 2.2rem;
+            }
+            
+            .profile-img {
+                width: 140px;
+                height: 140px;
+                font-size: 3.5rem;
+            }
+
+            .social-links {
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="matrix-bg" id="matrixBg"></div>
+    <div class="circuit-bg"></div>
+    
+    <div class="container">
+        <div class="terminal-header">
+            <div class="terminal-dot"></div>
+            <div class="terminal-dot"></div>
+            <div class="terminal-dot"></div>
+            <span class="terminal-title">developer_profile.exe</span>
+        </div>
+
+        <div class="floating-code">const skills = ['React', 'Node.js'];</div>
+        <div class="floating-code">function() { return 'awesome'; }</div>
+        <div class="floating-code">git commit -m "update portfolio"</div>
+        
+        <div class="header">
+            <div class="profile-img">NA</div>
+            <h1 class="name">Nguyễn Văn A</h1>
+            <p class="title typing-effect">Full-Stack Developer & Tech Enthusiast</p>
+            
+            <div class="social-links">
+                <a href="#" class="social-link">📧</a>
+                <a href="#" class="social-link">💻</a>
+                <a href="#" class="social-link">🔗</a>
+                <a href="#" class="social-link">🚀</a>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="section">
+                <h3><span class="section-icon">👨‍💻</span>About Me</h3>
+                <p>Passionate Full-Stack Developer với 4+ năm kinh nghiệm xây dựng các ứng dụng web và mobile hiện đại. Chuyên sâu về JavaScript ecosystem và cloud technologies.</p>
+                <p>Luôn tìm tòi những công nghệ cutting-edge và áp dụng vào các dự án thực tế để tạo ra những sản phẩm có giá trị.</p>
+            </div>
+
+            <div class="section">
+                <h3><span class="section-icon">🎯</span>Mission</h3>
+                <p>Xây dựng những sản phẩm công nghệ giúp cải thiện cuộc sống và tạo ra giá trị thực cho cộng đồng. Hướng tới việc trở thành Tech Lead và Startup Founder.</p>
+                <p>Đóng góp vào việc phát triển cộng đồng developer Việt Nam thông qua open source và knowledge sharing.</p>
+            </div>
+
+            <div class="section">
+                <h3><span class="section-icon">⚡</span>Tech Stack</h3>
+                <p>Công nghệ và tools tôi sử dụng hằng ngày:</p>
+                <div class="skills">
+                    <span class="skill-tag">JavaScript/TypeScript</span>
+                    <span class="skill-tag">React/Next.js</span>
+                    <span class="skill-tag">Vue.js/Nuxt.js</span>
+                    <span class="skill-tag">Node.js/Express</span>
+                    <span class="skill-tag">Python/Django</span>
+                    <span class="skill-tag">Docker/K8s</span>
+                    <span class="skill-tag">AWS/GCP</span>
+                    <span class="skill-tag">MongoDB/PostgreSQL</span>
+                    <span class="skill-tag">GraphQL/REST</span>
+                    <span class="skill-tag">AI/ML</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3><span class="section-icon">🏆</span>Achievements</h3>
+                <p>• Lead 25+ successful projects for startups & enterprises</p>
+                <p>• Built microservices handling 1M+ requests/day</p>
+                <p>• AWS Certified Solutions Architect</p>
+                <p>• Speaker at Vietnam Tech Conferences</p>
+                <p>• Mentor 50+ junior developers</p>
+                <p>• Open source contributor with 10K+ GitHub stars</p>
+            </div>
+
+            <div class="section contact-info">
+                <h3><span class="section-icon">📡</span>Connect With Me</h3>
+                <div class="contact-item">📧 dev@nguyenvana.com</div>
+                <div class="contact-item">📱 +84 123 456 789</div>
+                <div class="contact-item">📍 Ho Chi Minh City, Vietnam</div>
+                <div class="contact-item">🌐 www.nguyenvana.dev</div>
+                <div class="contact-item">💼 linkedin.com/in/nguyenvana</div>
+                <div class="contact-item">🔗 github.com/nguyenvana</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Matrix background effect
+        function createMatrixEffect() {
+            const matrixBg = document.getElementById('matrixBg');
+            const codeSnippets = [
+                'console.log("Hello World");',
+                'const app = () => {}',
+                'npm install react',
+                'git push origin main',
+                'docker build -t app .',
+                'SELECT * FROM users;',
+                'function fibonacci(n) {',
+                'import React from "react"',
+                'const [state, setState] = useState();',
+                'export default MyComponent;'
+            ];
+
+            function addCodeLine() {
+                const codeLine = document.createElement('div');
+                codeLine.className = 'code-line';
+                codeLine.textContent = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+                codeLine.style.top = Math.random() * 100 + '%';
+                codeLine.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                
+                matrixBg.appendChild(codeLine);
+                
+                setTimeout(() => {
+                    codeLine.remove();
+                }, 25000);
+            }
+
+            // Add initial code lines
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => addCodeLine(), i * 2000);
+            }
+
+            // Continue adding code lines
+            setInterval(addCodeLine, 3000);
+        }
+
+        // Typing effect for title
+        function typeWriter() {
+            const title = document.querySelector('.title');
+            const text = 'Full-Stack Developer & Tech Enthusiast';
+            title.textContent = '';
+            title.classList.remove('typing-effect');
+            
+            let i = 0;
+            function type() {
+                if (i < text.length) {
+                    title.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, 100);
+                } else {
+                    title.classList.add('typing-effect');
+                }
+            }
+            type();
+        }
+
+        // Initialize effects
+        document.addEventListener('DOMContentLoaded', function() {
+            createMatrixEffect();
+            setTimeout(typeWriter, 1000);
+        });
+    </script>
+</body>
+</html>
